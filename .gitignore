@@ -1,0 +1,8 @@
+/.idea
+/.gradle
+.DS_Store
+/build
+/out
+/iotmodules.properties
+/classes
+/iotmodules.iml
