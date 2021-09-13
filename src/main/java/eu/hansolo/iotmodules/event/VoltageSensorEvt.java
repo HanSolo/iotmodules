@@ -16,27 +16,24 @@
 
 package eu.hansolo.iotmodules.event;
 
-
 import eu.hansolo.evt.EvtPriority;
 import eu.hansolo.evt.EvtType;
 
 
-public class SensorEvt extends IotModuleEvt {
-    public static final EvtType<SensorEvt> ANY = new EvtType<>(IotModuleEvt.ANY, "SENSOR");
+public class VoltageSensorEvt extends SensorEvt {
+    public static final EvtType<VoltageSensorEvt> ANY     = new EvtType<>(SensorEvt.ANY, "ANY_VOLTAGE");
+    public static final EvtType<VoltageSensorEvt> VOLTAGE = new EvtType<>(VoltageSensorEvt.ANY, "VOLTAGE");
 
-    private Object data;
 
     // ******************** Constructors **************************************
-    public SensorEvt(final Object source, final EvtType<? extends SensorEvt> evtType, final Object data) { this(source, evtType, data, EvtPriority.NORMAL); }
-    public SensorEvt(final Object source, final EvtType<? extends SensorEvt> evtType, final Object data, final EvtPriority priority) {
-        super(source, evtType, priority);
-        if (null == data) { throw new IllegalArgumentException("Data cannot be null"); }
-        this.data = data;
+    public VoltageSensorEvt(final Object source, final EvtType<? extends SensorEvt> evtType, final Double voltage) {
+        super(source, evtType, voltage);
+    }
+    public VoltageSensorEvt(final Object source, final EvtType<? extends SensorEvt> evtType, final Double voltage, final EvtPriority priority) {
+        super(source, evtType, voltage, priority);
     }
 
 
     // ******************** Methods *******************************************
-    public EvtType<? extends SensorEvt> getEvtType() { return (EvtType<? extends SensorEvt>) super.getEvtType(); }
-
-    public Object getData() { return data; }
+    public Double getHumidity() { return (Double) super.getData(); }
 }
