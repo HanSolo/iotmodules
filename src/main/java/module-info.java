@@ -8,4 +8,7 @@ module eu.hansolo.iotmodules {
 
     exports eu.hansolo.iotmodules;
     exports eu.hansolo.iotmodules.tools;
+    exports eu.hansolo.iotmodules.event;
+    exports eu.hansolo.iotmodules.sensors;
+    exports eu.hansolo.iotmodules.actors;
 }

@@ -18,6 +18,7 @@ package eu.hansolo.iotmodules;
 
 import eu.hansolo.evt.EvtObserver;
 import eu.hansolo.iotmodules.event.TemperatureSensorEvt;
+import eu.hansolo.iotmodules.sensors.TemperatureSensor;
 import eu.hansolo.iotmodules.tools.Converter;
 import eu.hansolo.iotmodules.tools.Converter.UnitDefinition;
 
@@ -29,7 +30,7 @@ public class Main {
     public Main() {
         Converter temperatureConverter = new Converter(TEMPERATURE, UnitDefinition.CELSIUS);
 
-        TemperatureSensor                 temperatureSensor   = new TemperatureSensor();
+        TemperatureSensor temperatureSensor = new TemperatureSensor();
         EvtObserver<TemperatureSensorEvt> temperatureObserver = evt -> {
             System.out.println("Celsius   : " + evt.getTemperature() + UnitDefinition.CELSIUS.UNIT.getUnitShort());
             System.out.println("Kelvin    : " + temperatureConverter.convertToString(evt.getTemperature(), UnitDefinition.KELVIN));

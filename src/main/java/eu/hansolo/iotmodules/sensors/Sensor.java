@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eu.hansolo.iotmodules;
+package eu.hansolo.iotmodules.sensors;
 
 import eu.hansolo.iotmodules.event.SensorEvt;
 

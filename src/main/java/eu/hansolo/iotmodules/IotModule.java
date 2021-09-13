@@ -16,6 +16,9 @@
 
 package eu.hansolo.iotmodules;
 
+import eu.hansolo.iotmodules.actors.Actor;
+import eu.hansolo.iotmodules.sensors.Sensor;
+
 import java.util.List;
 
 
