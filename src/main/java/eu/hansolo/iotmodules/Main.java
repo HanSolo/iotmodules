@@ -26,6 +26,7 @@ public class Main {
         TemperatureSensor                 temperatureSensor   = new TemperatureSensor();
         EvtObserver<TemperatureSensorEvt> temperatureObserver = evt -> System.out.println("Temperature: " + evt.getTemperature());
         temperatureSensor.addOnEvt(TemperatureSensorEvt.TEMPERATURE, temperatureObserver);
+        temperatureSensor.temperatureProperty().addOnChange(evt -> System.out.println("Temperature changed from " + evt.getOldValue() + " to " + evt.getValue()));
 
         temperatureSensor.setTemperature(15);
     }
