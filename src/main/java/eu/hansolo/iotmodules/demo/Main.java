@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package eu.hansolo.iotmodules;
+package eu.hansolo.iotmodules.demo;
 
 import eu.hansolo.evt.EvtObserver;
 import eu.hansolo.iotmodules.event.TemperatureSensorEvt;
 import eu.hansolo.iotmodules.sensors.TemperatureSensor;
 import eu.hansolo.iotmodules.tools.Converter;
 import eu.hansolo.iotmodules.tools.Converter.UnitDefinition;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.UUID;
 
 import static eu.hansolo.iotmodules.tools.Converter.Category.TEMPERATURE;
 
@@ -30,7 +34,7 @@ public class Main {
     public Main() {
         Converter temperatureConverter = new Converter(TEMPERATURE, UnitDefinition.CELSIUS);
 
-        TemperatureSensor temperatureSensor = new TemperatureSensor();
+        TemperatureSensor temperatureSensor = new TemperatureSensor("temp_" + UUID.randomUUID());
         EvtObserver<TemperatureSensorEvt> temperatureObserver = evt -> {
             System.out.println("Celsius   : " + evt.getTemperature() + UnitDefinition.CELSIUS.UNIT.getUnitShort());
             System.out.println("Kelvin    : " + temperatureConverter.convertToString(evt.getTemperature(), UnitDefinition.KELVIN));
@@ -40,6 +44,14 @@ public class Main {
         temperatureSensor.temperatureProperty().addOnChange(evt -> System.out.println("Temperature changed from " + evt.getOldValue() + " to " + evt.getValue()));
 
         temperatureSensor.setTemperature(15);
+
+        try {
+            System.out.println(InetAddress.getLocalHost().getHostName());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        Room room = new Room();
     }
 
 

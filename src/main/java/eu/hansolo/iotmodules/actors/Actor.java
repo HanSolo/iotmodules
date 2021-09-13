@@ -19,5 +19,9 @@ package eu.hansolo.iotmodules.actors;
 
 public interface Actor {
 
+    String getId();
+
     void dispose();
+
+    String toJsonString();
 }

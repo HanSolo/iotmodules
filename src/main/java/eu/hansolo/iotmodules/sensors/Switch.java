@@ -18,12 +18,11 @@ package eu.hansolo.iotmodules.sensors;
 
 import eu.hansolo.evt.Evt;
 import eu.hansolo.evt.EvtObserver;
-import eu.hansolo.evt.EvtPriority;
 import eu.hansolo.evt.EvtType;
 import eu.hansolo.evt.example.MyEvt;
 import eu.hansolo.iotmodules.event.SensorEvt;
-import eu.hansolo.iotmodules.event.HumiditySensorEvt;
-import eu.hansolo.properties.DoubleProperty;
+import eu.hansolo.iotmodules.event.SwitchEvt;
+import eu.hansolo.properties.BooleanProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -33,56 +32,62 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static eu.hansolo.iotmodules.tools.Constants.*;
 
 
-public class HumiditySensor implements Sensor {
+public class Switch implements Sensor {
+    public enum Type { PUSH_BUTTON, TOGGLE_BUTTON }
+
     private final Map<String, List<EvtObserver>> observers = new ConcurrentHashMap<>();
     private final String                         id;
-    private       double                         _humidity;
-    private       DoubleProperty                 humidity;
+    private final Type                           type;
+    private       boolean                        _on;
+    private       BooleanProperty                on;
 
 
     // ******************** Constructors **************************************
-    public HumiditySensor(final String id) {
+    public Switch(final String id, final Type type) {
         if (null == id || id.isEmpty()) { throw new IllegalArgumentException("Sensor ID cannot be null or empty"); }
-        this.id        = id;
-        this._humidity = 0;
+        if (null == type) { throw new IllegalArgumentException("Type cannot be null"); }
+        this.id   = id;
+        this.type = type;
+        this._on  = false;
     }
 
 
     // ******************** Methods *******************************************
     public String getId() { return id; }
 
-    public double getHumidity() { return null == humidity ? _humidity : humidity.get(); }
-    public void setHumidity(final double value) {
-        if (null == humidity) {
-            _humidity = value;
-            fireEvt(new HumiditySensorEvt(HumiditySensor.this, HumiditySensorEvt.HUMIDITY, value, EvtPriority.NORMAL));
+    public Type getType() { return type; }
+
+    public boolean isOn() { return null == on ? _on : on.get(); }
+    public void setOn(final boolean ON) {
+        if (null == on) {
+            _on = ON;
+            fireEvt(new SwitchEvt(Switch.this, ON ? SwitchEvt.ON : SwitchEvt.OFF, ON));
         } else {
-            humidity.set(value);
+            on.set(ON);
         }
     }
-    public DoubleProperty humidityProperty() {
-        if (null == humidity) {
-            humidity = new DoubleProperty() {
-                @Override protected void willChange(final Double oldValue, final Double newValue) {}
-                @Override protected void didChange(final Double oldValue, final Double newValue) {
-                    fireEvt(new HumiditySensorEvt(HumiditySensor.this, HumiditySensorEvt.HUMIDITY, newValue, EvtPriority.NORMAL));
+    public BooleanProperty onProperty() {
+        if (null == on) {
+            on = new BooleanProperty(false) {
+                @Override protected void willChange(final Boolean oldValue, final Boolean newValue) {}
+                @Override protected void didChange(final Boolean oldValue, final Boolean newValue) {
+                    fireEvt(new SwitchEvt(Switch.this, newValue ? SwitchEvt.ON : SwitchEvt.OFF, newValue));
                 }
             };
         }
-        return humidity;
+        return on;
     }
 
     public void triggerMeasurement() {
 
     }
 
-
     // ******************** EventHandling *************************************
-    public void addOnEvt(final EvtType<? extends HumiditySensorEvt> type, final EvtObserver observer) {
+    public void addOnEvt(final EvtType<? extends SwitchEvt> type, final EvtObserver observer) {
         if (!observers.keySet().contains(type.getName())) { observers.put(type.getName(), new CopyOnWriteArrayList<>()); }
         if (!observers.get(type.getName()).contains(observer)) { observers.get(type.getName()).add(observer); }
     }
-    public void removeOnEvt(final EvtType<? extends HumiditySensorEvt> type, final EvtObserver observer) {
+    public void removeOnEvt(final EvtType<? extends SwitchEvt> type, final EvtObserver observer) {
         if (!observers.keySet().contains(type.getName())) { return; }
         if (observers.get(type.getName()).contains(observer)) { observers.get(type.getName()).remove(observer); }
     }
@@ -99,20 +104,17 @@ public class HumiditySensor implements Sensor {
     }
 
     @Override public void dispose() {
-        removeAllObservers();
-        if (null != humidity) { humidity.removeAllListeners(); }
+        on.removeAllListeners();
     }
 
     @Override public String toJsonString() {
         StringBuilder msgBuilder = new StringBuilder();
         msgBuilder.append(CURLY_BRACKET_OPEN)
                   .append(INDENTED_QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA_NEW_LINE)
-                  .append(INDENTED_QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(TYPE_HUMIDITY).append(QUOTES).append(COMMA_NEW_LINE)
-                  .append(INDENTED_QUOTES).append(FIELD_HUMIDITY).append(QUOTES).append(COLON).append(getHumidity()).append(NEW_LINE)
+                  .append(INDENTED_QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(type.name()).append(QUOTES).append(COMMA_NEW_LINE)
                   .append(CURLY_BRACKET_CLOSE);
         return msgBuilder.toString();
     }
 
     @Override public String toString() { return toJsonString(); }
 }
-

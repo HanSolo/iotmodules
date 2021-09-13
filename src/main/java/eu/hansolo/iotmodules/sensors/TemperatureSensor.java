@@ -30,20 +30,27 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static eu.hansolo.iotmodules.tools.Constants.*;
+
 
 public class TemperatureSensor implements Sensor {
     private final Map<String, List<EvtObserver>> observers = new ConcurrentHashMap<>();
+    private final String                         id;
     private       double                         _temperature;
     private       DoubleProperty                 temperature;
 
 
     // ******************** Constructors **************************************
-    public TemperatureSensor() {
-        _temperature = 0;
+    public TemperatureSensor(final String id) {
+        if (null == id || id.isEmpty()) { throw new IllegalArgumentException("Sensor ID cannot be null or empty"); }
+        this.id           = id;
+        this._temperature = 0;
     }
 
 
     // ******************** Methods *******************************************
+    public String getId() { return id; }
+
     public double getTemperature() { return null == temperature ? _temperature : temperature.get(); }
     public void setTemperature(final double value) {
         if (null == temperature) {
@@ -63,6 +70,10 @@ public class TemperatureSensor implements Sensor {
             };
         }
         return temperature;
+    }
+
+    public void triggerMeasurement() {
+
     }
 
 
@@ -91,4 +102,16 @@ public class TemperatureSensor implements Sensor {
         removeAllObservers();
         if (null != temperature) { temperature.removeAllListeners(); }
     }
+
+    @Override public String toJsonString() {
+        StringBuilder msgBuilder = new StringBuilder();
+        msgBuilder.append(CURLY_BRACKET_OPEN)
+                  .append(INDENTED_QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA_NEW_LINE)
+                  .append(INDENTED_QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(TYPE_TEMPERATURE).append(QUOTES).append(COMMA_NEW_LINE)
+                  .append(INDENTED_QUOTES).append(FIELD_TEMPERATURE).append(QUOTES).append(COLON).append(getTemperature()).append(NEW_LINE)
+                  .append(CURLY_BRACKET_CLOSE);
+        return msgBuilder.toString();
+    }
+
+    @Override public String toString() { return toJsonString(); }
 }

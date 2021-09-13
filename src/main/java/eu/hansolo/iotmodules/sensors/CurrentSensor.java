@@ -31,20 +31,27 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static eu.hansolo.iotmodules.tools.Constants.*;
+
 
 public class CurrentSensor implements Sensor {
     private final Map<String, List<EvtObserver>> observers = new ConcurrentHashMap<>();
+    private final String                         id;
     private       double                         _current;
     private       DoubleProperty                 current;
 
 
     // ******************** Constructors **************************************
-    public CurrentSensor() {
-        _current = 0;
+    public CurrentSensor(final String id) {
+        if (null == id || id.isEmpty()) { throw new IllegalArgumentException("Sensor ID cannot be null or empty"); }
+        this.id       = id;
+        this._current = 0;
     }
 
 
     // ******************** Methods *******************************************
+    public String getId() { return id; }
+
     public double getCurrent() { return null == current ? _current : current.get(); }
     public void setCurrent(final double value) {
         if (null == current) {
@@ -64,6 +71,10 @@ public class CurrentSensor implements Sensor {
             };
         }
         return current;
+    }
+
+    public void triggerMeasurement() {
+
     }
 
 
@@ -92,4 +103,16 @@ public class CurrentSensor implements Sensor {
         removeAllObservers();
         if (null != current) { current.removeAllListeners(); }
     }
+
+    @Override public String toJsonString() {
+        StringBuilder msgBuilder = new StringBuilder();
+        msgBuilder.append(CURLY_BRACKET_OPEN)
+                  .append(INDENTED_QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA_NEW_LINE)
+                  .append(INDENTED_QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(TYPE_CURRENT).append(QUOTES).append(COMMA_NEW_LINE)
+                  .append(INDENTED_QUOTES).append(FIELD_CURRENT).append(QUOTES).append(COLON).append(getCurrent()).append(NEW_LINE)
+                  .append(CURLY_BRACKET_CLOSE);
+        return msgBuilder.toString();
+    }
+
+    @Override public String toString() { return toJsonString(); }
 }

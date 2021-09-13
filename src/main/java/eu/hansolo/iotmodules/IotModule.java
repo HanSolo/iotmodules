@@ -20,12 +20,33 @@ import eu.hansolo.iotmodules.actors.Actor;
 import eu.hansolo.iotmodules.sensors.Sensor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static eu.hansolo.iotmodules.tools.Constants.*;
 
-public interface IotModule {
-    String getId();
+public abstract class IotModule {
 
-    List<Sensor> getSensors();
+    public abstract void init();
 
-    List<Actor> getActors();
+    public abstract void registerListeners();
+
+    public abstract String getId();
+
+    public abstract List<Sensor> getSensors();
+
+    public abstract List<Actor> getActors();
+
+    @Override public String toString() {
+        StringBuilder msgBuilder = new StringBuilder();
+        msgBuilder.append(CURLY_BRACKET_OPEN).append(NEW_LINE)
+                  .append(INDENTED_QUOTES).append(FIELD_MODULE_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA_NEW_LINE)
+                  .append(INDENTED_QUOTES).append(FIELD_SENSORS).append(QUOTES).append(COLON)
+                  .append(getSensors().parallelStream().map(sensor -> sensor.toJsonString()).collect(Collectors.joining(COMMA_NEW_LINE, SQUARE_BRACKET_OPEN, SQUARE_BRACKET_CLOSE)))
+                  .append(COMMA_NEW_LINE)
+                  .append(INDENTED_QUOTES).append(FIELD_ACTORS).append(QUOTES).append(COLON)
+                  .append(getActors().parallelStream().map(actor -> actor.toJsonString()).collect(Collectors.joining(COMMA_NEW_LINE, SQUARE_BRACKET_OPEN, SQUARE_BRACKET_CLOSE)))
+                  .append(NEW_LINE)
+                  .append(CURLY_BRACKET_CLOSE);
+        return msgBuilder.toString();
+    }
 }

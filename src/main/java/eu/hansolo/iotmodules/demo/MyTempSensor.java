@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package eu.hansolo.iotmodules.sensors;
+package eu.hansolo.iotmodules.demo;
 
-import eu.hansolo.iotmodules.event.SensorEvt;
+import eu.hansolo.iotmodules.sensors.TemperatureSensor;
 
 
-public interface Sensor {
+public class MyTempSensor extends TemperatureSensor {
 
-    String getId();
+    public MyTempSensor(final String id) {
+        super(id);
+    }
 
-    void triggerMeasurement();
-
-    void fireEvt(final SensorEvt evt);
-
-    void dispose();
-
-    String toJsonString();
+    @Override public void triggerMeasurement() { setTemperature(Math.random() * 100.0); }
 }

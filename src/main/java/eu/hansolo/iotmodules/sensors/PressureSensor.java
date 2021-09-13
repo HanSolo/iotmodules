@@ -30,20 +30,27 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static eu.hansolo.iotmodules.tools.Constants.*;
+
 
 public class PressureSensor implements Sensor {
     private final Map<String, List<EvtObserver>> observers = new ConcurrentHashMap<>();
+    private final String                         id;
     private       double                         _pressure;
     private       DoubleProperty                 pressure;
 
 
     // ******************** Constructors **************************************
-    public PressureSensor() {
-        _pressure = 0;
+    public PressureSensor(final String id) {
+        if (null == id || id.isEmpty()) { throw new IllegalArgumentException("Sensor ID cannot be null or empty"); }
+        this.id        = id;
+        this._pressure = 0;
     }
 
 
     // ******************** Methods *******************************************
+    public String getId() { return id; }
+
     public double getPressure() { return null == pressure ? _pressure : pressure.get(); }
     public void setPressure(final double value) {
         if (null == pressure) {
@@ -63,6 +70,10 @@ public class PressureSensor implements Sensor {
             };
         }
         return pressure;
+    }
+
+    public void triggerMeasurement() {
+
     }
 
 
@@ -91,4 +102,16 @@ public class PressureSensor implements Sensor {
         removeAllObservers();
         if (null != pressure) { pressure.removeAllListeners(); }
     }
+
+    @Override public String toJsonString() {
+        StringBuilder msgBuilder = new StringBuilder();
+        msgBuilder.append(CURLY_BRACKET_OPEN)
+                  .append(INDENTED_QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA_NEW_LINE)
+                  .append(INDENTED_QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(TYPE_PRESSURE).append(QUOTES).append(COMMA_NEW_LINE)
+                  .append(INDENTED_QUOTES).append(FIELD_PRESSURE).append(QUOTES).append(COLON).append(getPressure()).append(NEW_LINE)
+                  .append(CURLY_BRACKET_CLOSE);
+        return msgBuilder.toString();
+    }
+
+    @Override public String toString() { return toJsonString(); }
 }

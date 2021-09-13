@@ -35,7 +35,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 description   = 'IoTModules is a Java library that helps handling IoT devices like sensors and actors'
-mainClassName = "$moduleName/eu.hansolo.iotmodules.Main"
+mainClassName = "$moduleName/eu.hansolo.iotmodules.demo.Main"
 
 Date buildTimeAndDate = new Date()
 ext {
@@ -81,7 +81,7 @@ jar {
 
 // start the demo from gradle
 task Demo(type: JavaExec) {
-    main = "eu.hansolo.iotmodules.Main"
+    main = "eu.hansolo.iotmodules.demo.Main"
     classpath = sourceSets.main.runtimeClasspath
 }
 

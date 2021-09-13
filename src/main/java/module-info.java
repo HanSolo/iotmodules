@@ -11,4 +11,5 @@ module eu.hansolo.iotmodules {
     exports eu.hansolo.iotmodules.event;
     exports eu.hansolo.iotmodules.sensors;
     exports eu.hansolo.iotmodules.actors;
+    exports eu.hansolo.iotmodules.demo;
 }
