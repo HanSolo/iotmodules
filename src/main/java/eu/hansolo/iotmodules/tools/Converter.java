@@ -265,8 +265,8 @@ public class Converter {
         }
     }
 
-    public  static final String[]                          ABBREVIATIONS      = { "k", "M", "G", "T", "P", "E", "Z", "Y" };
-    public  static final int                               MAX_NO_OF_DECIMALS = 12;
+    public static final  String[]                          ABBREVIATIONS      = { "k", "M", "G", "T", "P", "E", "Z", "Y" };
+    public static final  int                               MAX_NO_OF_DECIMALS = 12;
     private static final EnumMap<Category, UnitDefinition> BASE_UNITS         = new EnumMap<Category, UnitDefinition>(Category.class) {
         {
             put(Category.ACCELERATION, UnitDefinition.METER_PER_SQUARE_SECOND);
@@ -295,23 +295,23 @@ public class Converter {
         }
     };
 
-    private UnitDefinition                 baseUnitDefinition;
-    private Unit   bean;
-    private Locale locale;
-    private int    decimals;
-    private String                         formatString;
+    private              UnitDefinition                    baseUnitDefinition;
+    private              Unit                              bean;
+    private              Locale                            locale;
+    private              int                               decimals;
+    private              String                            formatString;
 
 
     // ******************** Constructors **************************************
-    public Converter(final Category UNIT_TYPE) {
-        this(UNIT_TYPE, BASE_UNITS.get(UNIT_TYPE));
+    public Converter(final Category unitType) {
+        this(unitType, BASE_UNITS.get(unitType));
     }
-    public Converter(final Category UNIT_TYPE, final UnitDefinition BASE_UNIT_DEFINITION) {
-        baseUnitDefinition = BASE_UNIT_DEFINITION;
-        bean               = BASE_UNITS.get(UNIT_TYPE).UNIT;
-        locale             = Locale.US;
-        decimals           = 2;
-        formatString       = "%.2f";
+    public Converter(final Category unitType, final UnitDefinition baseUnitDefinition) {
+        this.baseUnitDefinition = baseUnitDefinition;
+        this.bean               = BASE_UNITS.get(unitType).UNIT;
+        this.locale             = Locale.US;
+        this.decimals           = 2;
+        this.formatString       = "%.2f";
     }
 
 
@@ -319,8 +319,8 @@ public class Converter {
     public Category getUnitType() { return bean.getCategory(); }
 
     public UnitDefinition getBaseUnitDefinition() { return baseUnitDefinition; }
-    public void setBaseUnitDefinition(final UnitDefinition BASE_UNIT_DEFINITION) {
-        if (BASE_UNIT_DEFINITION.UNIT.getCategory() == getUnitType()) { baseUnitDefinition = BASE_UNIT_DEFINITION; }
+    public void setBaseUnitDefinition(final UnitDefinition baseUnitDefinition) {
+        if (baseUnitDefinition.UNIT.getCategory() == getUnitType()) { this.baseUnitDefinition = baseUnitDefinition; }
     }
 
     public BigDecimal getFactor() { return bean.getFactor(); }
@@ -332,102 +332,97 @@ public class Converter {
     public String getUnitShort() { return bean.getUnitShort(); }
 
     public Locale getLocale() { return locale; }
-    public void setLocale(final Locale LOCALE) { locale = LOCALE; }
+    public void setLocale(final Locale locale) { this.locale = locale; }
 
     public int getDecimals() { return decimals; }
-    public void setDecimals(final int DECIMALS) {
-        if (DECIMALS < 0 ) {
-            decimals = 0;
-        } else if (DECIMALS > MAX_NO_OF_DECIMALS) {
-            decimals = MAX_NO_OF_DECIMALS;
+    public void setDecimals(final int decimals) {
+        if (decimals < 0 ) {
+            this.decimals = 0;
+        } else if (decimals > MAX_NO_OF_DECIMALS) {
+            this.decimals = MAX_NO_OF_DECIMALS;
         } else {
-            decimals = DECIMALS;
+            this.decimals = decimals;
         }
-        formatString = new StringBuilder("%.").append(decimals).append("f").toString();
+        formatString = new StringBuilder("%.").append(this.decimals).append("f").toString();
     }
 
     public String getFormatString() { return formatString; }
 
     public final boolean isActive() { return bean.isActive(); }
-    public final void setActive(final boolean ACTIVE) { bean.setActive(ACTIVE); }
+    public final void setActive(final boolean active) { bean.setActive(active); }
 
-    public final double convert(final double VALUE, final UnitDefinition UNIT_DEFINITION) {
-        if (UNIT_DEFINITION.UNIT.getCategory() != getUnitType()) { throw new IllegalArgumentException("units have to be of the same type"); }
-        return ((((VALUE + baseUnitDefinition.UNIT.getOffset().doubleValue()) * baseUnitDefinition.UNIT.getFactor().doubleValue()) + bean.getOffset().doubleValue()) * bean.getFactor().doubleValue()) / UNIT_DEFINITION.UNIT
-            .getFactor().doubleValue() - UNIT_DEFINITION.UNIT.getOffset().doubleValue();
+    public final double convert(final double value, final UnitDefinition unitDefinition) {
+        if (unitDefinition.UNIT.getCategory() != getUnitType()) { throw new IllegalArgumentException("units have to be of the same type"); }
+        return ((((value + baseUnitDefinition.UNIT.getOffset().doubleValue()) * baseUnitDefinition.UNIT.getFactor().doubleValue()) + bean.getOffset().doubleValue()) * bean.getFactor().doubleValue()) / unitDefinition.UNIT
+            .getFactor().doubleValue() - unitDefinition.UNIT.getOffset().doubleValue();
     }
 
-    public final String convertToString(final double VALUE, final UnitDefinition UNIT_DEFINITION) {
-        return String.join(" ", String.format(locale, formatString, convert(VALUE, UNIT_DEFINITION)), UNIT_DEFINITION.UNIT.getUnitShort());
+    public final String convertToString(final double value, final UnitDefinition unitDefinition) {
+        return String.join(" ", String.format(locale, formatString, convert(value, unitDefinition)), unitDefinition.UNIT.getUnitShort());
     }
 
-    public final double convertToBaseUnit(final double VALUE, final UnitDefinition UNIT_DEFINITION) {
-        return ((((VALUE + UNIT_DEFINITION.UNIT.getOffset().doubleValue()) * UNIT_DEFINITION.UNIT.getFactor().doubleValue()) + bean.getOffset().doubleValue()) * bean.getFactor().doubleValue()) / baseUnitDefinition.UNIT
+    public final double convertToBaseUnit(final double value, final UnitDefinition unitDefinition) {
+        return ((((value + unitDefinition.UNIT.getOffset().doubleValue()) * unitDefinition.UNIT.getFactor().doubleValue()) + bean.getOffset().doubleValue()) * bean.getFactor().doubleValue()) / baseUnitDefinition.UNIT
             .getFactor().doubleValue() - baseUnitDefinition.UNIT.getOffset().doubleValue();
     }
 
     public final Pattern getPattern() {
-        final StringBuilder PATTERN_BUILDER = new StringBuilder();
-        PATTERN_BUILDER.append("^([-+]?\\d*\\.?\\d*)\\s?(");
+        final StringBuilder patternBuilder = new StringBuilder();
+        patternBuilder.append("^([-+]?\\d*\\.?\\d*)\\s?(");
 
         for (UnitDefinition unitDefinition : UnitDefinition.values()) {
-            PATTERN_BUILDER.append(unitDefinition.UNIT.getUnitShort().replace("*", "\\*")).append("|");
+            patternBuilder.append(unitDefinition.UNIT.getUnitShort().replace("*", "\\*")).append("|");
         }
 
-        PATTERN_BUILDER.deleteCharAt(PATTERN_BUILDER.length() - 1);
+        patternBuilder.deleteCharAt(patternBuilder.length() - 1);
 
-        //PATTERN_BUILDER.append("){1}$");
-        PATTERN_BUILDER.append(")?$");
+        //patternBuilder.append("){1}$");
+        patternBuilder.append(")?$");
 
-        return Pattern.compile(PATTERN_BUILDER.toString());
+        return Pattern.compile(patternBuilder.toString());
     }
 
-    public final List<Unit> getAvailableUnits(final Category UNIT_DEFINITION) {
-        return getAllUnitDefinitions().get(UNIT_DEFINITION).stream().map(unitDefinition -> unitDefinition.UNIT).collect(Collectors.toList());
+    public final List<Unit> getAvailableUnits(final Category unitDefinition) {
+        return getAllUnitDefinitions().get(unitDefinition).stream().map(unitDef -> unitDef.UNIT).collect(Collectors.toList());
     }
 
     public final EnumMap<Category, ArrayList<UnitDefinition>> getAllUnitDefinitions() {
-        final EnumMap<Category, ArrayList<UnitDefinition>> UNIT_TYPES    = new EnumMap<>(Category.class);
-        final ArrayList<Category>                          CATEGORY_LIST = new ArrayList<>(Category.values().length);
-        CATEGORY_LIST.addAll(Arrays.asList(Category.values()));
-        CATEGORY_LIST.forEach(category -> UNIT_TYPES.put(category, new ArrayList<>()));
+        final EnumMap<Category, ArrayList<UnitDefinition>> unitTypes  = new EnumMap<>(Category.class);
+        final ArrayList<Category>                          categories = new ArrayList<>(Category.values().length);
+        categories.addAll(Arrays.asList(Category.values()));
+        categories.forEach(category -> unitTypes.put(category, new ArrayList<>()));
         for (UnitDefinition unitDefinition : UnitDefinition.values()) {
-            UNIT_TYPES.get(unitDefinition.UNIT.getCategory()).add(unitDefinition);
+            unitTypes.get(unitDefinition.UNIT.getCategory()).add(unitDefinition);
         }
-        return UNIT_TYPES;
+        return unitTypes;
     }
 
     public final EnumMap<Category, ArrayList<UnitDefinition>> getAllActiveUnitDefinitions() {
-        final EnumMap<Category, ArrayList<UnitDefinition>> UNIT_DEFINITIONS = new EnumMap<>(Category.class);
-        final ArrayList<Category>                          CATEGORY_LIST    = new ArrayList<>(Category.values().length);
-        CATEGORY_LIST.addAll(Arrays.asList(Category.values()));
-        CATEGORY_LIST.forEach(category -> UNIT_DEFINITIONS.put(category, new ArrayList<>()));
+        final EnumMap<Category, ArrayList<UnitDefinition>> unitDefinitions = new EnumMap<>(Category.class);
+        final ArrayList<Category>                          categories      = new ArrayList<>(Category.values().length);
+        categories.addAll(Arrays.asList(Category.values()));
+        categories.forEach(category -> unitDefinitions.put(category, new ArrayList<>()));
         for (UnitDefinition unitDefinition : UnitDefinition.values()) {
-            if (unitDefinition.UNIT.isActive()) { UNIT_DEFINITIONS.get(unitDefinition.UNIT.getCategory()).add(unitDefinition); }
+            if (unitDefinition.UNIT.isActive()) { unitDefinitions.get(unitDefinition.UNIT.getCategory()).add(unitDefinition); }
         }
-        return UNIT_DEFINITIONS;
+        return unitDefinitions;
     }
 
-    public static final String format(final double NUMBER, final int DECIMALS) {
-        return format(NUMBER, clamp(0, 12, DECIMALS), Locale.US);
+    public static final String format(final double number, final int decimals) {
+        return format(number, Helper.clamp(0, 12, decimals), Locale.US);
     }
-    public static final String format(final double NUMBER, final int DECIMALS, final Locale LOCALE) {
-        String formatString = new StringBuilder("%.").append(clamp(0, 12, DECIMALS)).append("f").toString();
+    public static final String format(final double number, final int decimals, final Locale locale) {
+        String formatString = new StringBuilder("%.").append(Helper.clamp(0, 12, decimals)).append("f").toString();
         double value;
         for(int i = ABBREVIATIONS.length - 1 ; i >= 0; i--) {
             value = Math.pow(1000, i+1);
-            if (Double.compare(NUMBER, -value) <= 0 || Double.compare(NUMBER, value) >= 0) {
-                return String.format(LOCALE, formatString, (NUMBER / value)) + ABBREVIATIONS[i];
+            if (Double.compare(number, -value) <= 0 || Double.compare(number, value) >= 0) {
+                return String.format(locale, formatString, (number / value)) + ABBREVIATIONS[i];
             }
         }
-        return String.format(LOCALE, formatString, NUMBER);
+        return String.format(locale, formatString, number);
     }
 
-    private static int clamp(final int MIN, final int MAX, final int VALUE) {
-        if (VALUE < MIN) return MIN;
-        if (VALUE > MAX) return MAX;
-        return VALUE;
-    }
 
     @Override public String toString() { return getUnitType().toString(); }
 }

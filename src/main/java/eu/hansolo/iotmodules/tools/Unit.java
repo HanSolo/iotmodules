@@ -31,34 +31,34 @@ public class Unit {
 
 
     // ******************** Constructors **************************************
-    public Unit(final Category CATEGORY, final String UNIT_SHORT, final String UNIT_NAME, final double FACTOR) {
-        this(CATEGORY, UNIT_SHORT, UNIT_NAME, FACTOR, 0.0);
+    public Unit(final Category category, final String unitShort, final String unitName, final double factor) {
+        this(category, unitShort, unitName, factor, 0.0);
     }
-    public Unit(final Category CATEGORY, final String UNIT_SHORT, final String UNIT_NAME, final double FACTOR, final boolean ACTIVE) {
-        this(CATEGORY, UNIT_SHORT, UNIT_NAME, FACTOR, 0.0, ACTIVE);
+    public Unit(final Category category, final String unitShort, final String unitName, final double factor, final boolean active) {
+        this(category, unitShort, unitName, factor, 0.0, active);
     }
-    public Unit(final Category CATEGORY, final String UNIT_SHORT, final String UNIT_NAME, final BigDecimal FACTOR) {
-        this(CATEGORY, UNIT_SHORT, UNIT_NAME, FACTOR, new BigDecimal("0.0"), true);
+    public Unit(final Category category, final String unitShort, final String unitName, final BigDecimal factor) {
+        this(category, unitShort, unitName, factor, new BigDecimal("0.0"), true);
     }
-    public Unit(final Category CATEGORY, final String UNIT_SHORT, final String UNIT_NAME, final BigDecimal FACTOR, final boolean ACTIVE) {
-        this(CATEGORY, UNIT_SHORT, UNIT_NAME, FACTOR, new BigDecimal("0.0"), ACTIVE);
+    public Unit(final Category category, final String unitShort, final String unitName, final BigDecimal factor, final boolean active) {
+        this(category, unitShort, unitName, factor, new BigDecimal("0.0"), active);
     }
-    public Unit(final Category CATEGORY, final String UNIT_SHORT, final String UNIT_NAME, final double FACTOR, final double OFFSET) {
-        this(CATEGORY, UNIT_SHORT, UNIT_NAME, new BigDecimal(Double.toString(FACTOR)), new BigDecimal(Double.toString(OFFSET)), true);
+    public Unit(final Category category, final String unitShort, final String unitName, final double factor, final double offset) {
+        this(category, unitShort, unitName, new BigDecimal(Double.toString(factor)), new BigDecimal(Double.toString(offset)), true);
     }
-    public Unit(final Category CATEGORY, final String UNIT_SHORT, final String UNIT_NAME, final double FACTOR, final double OFFSET, final boolean ACTIVE) {
-        this(CATEGORY, UNIT_SHORT, UNIT_NAME, new BigDecimal(Double.toString(FACTOR)), new BigDecimal(Double.toString(OFFSET)), ACTIVE);
+    public Unit(final Category category, final String unitShort, final String unitName, final double factor, final double offset, final boolean active) {
+        this(category, unitShort, unitName, new BigDecimal(Double.toString(factor)), new BigDecimal(Double.toString(offset)), active);
     }
-    public Unit(final Category CATEGORY, final String UNIT_SHORT, final String UNIT_NAME, final BigDecimal FACTOR_BD, final BigDecimal OFFSET_BD) {
-        this(CATEGORY, UNIT_SHORT, UNIT_NAME, FACTOR_BD, OFFSET_BD, true);
+    public Unit(final Category category, final String unitShort, final String unitName, final BigDecimal factorBd, final BigDecimal offsetBd) {
+        this(category, unitShort, unitName, factorBd, offsetBd, true);
     }
-    public Unit(final Category CATEGORY, final String UNIT_SHORT, final String UNIT_NAME, final BigDecimal FACTOR_BD, final BigDecimal OFFSET_BD, final boolean ACTIVE) {
-        category  = CATEGORY;
-        unitShort = UNIT_SHORT;
-        unitName  = UNIT_NAME;
-        factor    = FACTOR_BD;
-        offset    = OFFSET_BD;
-        active    = ACTIVE;
+    public Unit(final Category category, final String unitShort, final String unitName, final BigDecimal factorBd, final BigDecimal offsetBd, final boolean active) {
+        this.category  = category;
+        this.unitShort = unitShort;
+        this.unitName  = unitName;
+        this.factor    = factorBd;
+        this.offset    = offsetBd;
+        this.active    = active;
     }
 
 
@@ -70,15 +70,15 @@ public class Unit {
     public final String getUnitName() { return unitName; }
 
     public final BigDecimal getFactor() { return factor; }
-    public final void setFactor(final BigDecimal FACTOR) { factor = FACTOR; }
-    public final void setFactor(final double FACTOR) { factor = new BigDecimal(Double.toString(FACTOR)); }
+    public final void setFactor(final BigDecimal factor) { this.factor = factor; }
+    public final void setFactor(final double factor) { this.factor = new BigDecimal(Double.toString(factor)); }
 
     public final BigDecimal getOffset() { return offset; }
-    public final void setOffset(final BigDecimal OFFSET) { offset = OFFSET; }
-    public final void setOffset(final double OFFSET) { offset =  new BigDecimal(Double.toString(OFFSET)); }
+    public final void setOffset(final BigDecimal offset) { this.offset = offset; }
+    public final void setOffset(final double offset) { this.offset =  new BigDecimal(Double.toString(offset)); }
 
     public final boolean isActive() { return active; }
-    public final void setActive(final boolean ACTIVE) { active = ACTIVE; }
+    public final void setActive(final boolean active) { this.active = active; }
 
     @Override public final String toString() {
         return new StringBuilder().append(category)
