@@ -16,4 +16,22 @@
 
 package eu.hansolo.iotmodules;
 
-public class Main { }
+import eu.hansolo.evt.EvtObserver;
+import eu.hansolo.iotmodules.event.TemperatureSensorEvt;
+
+
+public class Main {
+
+    public Main() {
+        TemperatureSensor                 temperatureSensor   = new TemperatureSensor();
+        EvtObserver<TemperatureSensorEvt> temperatureObserver = evt -> System.out.println("Temperature: " + evt.getTemperature());
+        temperatureSensor.addOnEvt(TemperatureSensorEvt.TEMPERATURE, temperatureObserver);
+
+        temperatureSensor.setTemperature(15);
+    }
+
+
+    public static void main(String[] args) {
+        new Main();
+    }
+}
