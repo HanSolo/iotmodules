@@ -18,13 +18,22 @@ package eu.hansolo.iotmodules;
 
 import eu.hansolo.evt.EvtObserver;
 import eu.hansolo.iotmodules.event.TemperatureSensorEvt;
+import eu.hansolo.iotmodules.tools.Converter;
+import eu.hansolo.iotmodules.tools.Converter.UnitDefinition;
+
+import static eu.hansolo.iotmodules.tools.Converter.Category.TEMPERATURE;
 
 
 public class Main {
 
     public Main() {
+        Converter temperatureConverter = new Converter(TEMPERATURE, UnitDefinition.CELSIUS);
+
         TemperatureSensor                 temperatureSensor   = new TemperatureSensor();
-        EvtObserver<TemperatureSensorEvt> temperatureObserver = evt -> System.out.println("Temperature: " + evt.getTemperature());
+        EvtObserver<TemperatureSensorEvt> temperatureObserver = evt -> {
+            System.out.println("Temperature  : " + evt.getTemperature() + UnitDefinition.CELSIUS.UNIT.getUnitShort());
+            System.out.println("In Fahrenheit: " + temperatureConverter.convert(evt.getTemperature(), UnitDefinition.FAHRENHEIT) + " " + UnitDefinition.FAHRENHEIT.UNIT.getUnitShort());
+        };
         temperatureSensor.addOnEvt(TemperatureSensorEvt.TEMPERATURE, temperatureObserver);
         temperatureSensor.temperatureProperty().addOnChange(evt -> System.out.println("Temperature changed from " + evt.getOldValue() + " to " + evt.getValue()));
 
