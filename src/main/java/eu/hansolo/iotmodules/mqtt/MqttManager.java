@@ -40,9 +40,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 public class MqttManager {
-    private static final String LAST_WILL_TOPIC = new StringBuilder().append(PropertyManager.INSTANCE.getString(Constants.MQTT_TOPIC_PRESENCE))
+    private static final String LAST_WILL_TOPIC = new StringBuilder().append(PropertyManager.INSTANCE.getString(Constants.PROPERTY_MQTT_TOPIC_PRESENCE))
                                                                      .append(Constants.MQTT_TOPIC_SEPARATOR)
-                                                                     .append(PropertyManager.INSTANCE.getString(Constants.CLIENT_ID))
+                                                                     .append(PropertyManager.INSTANCE.getString(Constants.PROPERTY_CLIENT_ID))
                                                                      .toString();
     private Mqtt5AsyncClient      asyncClient;
     private BooleanProperty       connected;
@@ -57,8 +57,8 @@ public class MqttManager {
         this.lastWillPayload = lastWillPayload;
         asyncClient          = MqttClient.builder()
                                          .useMqttVersion5()
-                                         .serverHost(PropertyManager.INSTANCE.getString(Constants.MQTT_HOST))
-                                         .serverPort(PropertyManager.INSTANCE.getInt(Constants.MQTT_PORT))
+                                         .serverHost(PropertyManager.INSTANCE.getString(Constants.PROPERTY_MQTT_HOST))
+                                         .serverPort(PropertyManager.INSTANCE.getInt(Constants.PROPERTY_MQTT_PORT))
                                          .sslWithDefaultConfig()
                                          .buildAsync();
 
@@ -97,13 +97,12 @@ public class MqttManager {
         asyncClient.unsubscribe(Mqtt5Unsubscribe.builder().topicFilter(topic).build());
     }
 
-
     private void connect(final boolean cleanStart) {
         if (null == asyncClient) {
             asyncClient = MqttClient.builder()
                                     .useMqttVersion5()
-                                    .serverHost(PropertyManager.INSTANCE.getString(Constants.MQTT_HOST))
-                                    .serverPort(PropertyManager.INSTANCE.getInt(Constants.MQTT_PORT))
+                                    .serverHost(PropertyManager.INSTANCE.getString(Constants.PROPERTY_MQTT_HOST))
+                                    .serverPort(PropertyManager.INSTANCE.getInt(Constants.PROPERTY_MQTT_PORT))
                                     .sslWithDefaultConfig()
                                     .buildAsync();
         }
@@ -114,8 +113,8 @@ public class MqttManager {
                        .noSessionExpiry()
                        .keepAlive(60)
                        .simpleAuth()
-                       .username(PropertyManager.INSTANCE.getString(Constants.MQTT_USER))
-                       .password(UTF_8.encode(PropertyManager.INSTANCE.getString(Constants.MQTT_PW)))
+                       .username(PropertyManager.INSTANCE.getString(Constants.PROPERTY_MQTT_USER))
+                       .password(UTF_8.encode(PropertyManager.INSTANCE.getString(Constants.PROPERTY_MQTT_PW)))
                        .applySimpleAuth()
                        .willPublish(Mqtt5WillPublish.builder()
                                                     .topic(LAST_WILL_TOPIC)
@@ -132,7 +131,6 @@ public class MqttManager {
             //client.disconnect();
         });
     }
-
 
     public void addMqttObserver(final MqttEvtObserver observer) {
         if (observers.contains(observer)) { return; }

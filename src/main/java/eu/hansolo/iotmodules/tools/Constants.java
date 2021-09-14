@@ -17,50 +17,48 @@
 package eu.hansolo.iotmodules.tools;
 
 public class Constants {
-    public static final String PROPERTIES_FILE_NAME   = "iotmodules.properties";
+    public static final String PROPERTIES_FILE_NAME            = "iotmodules.properties";
 
-    public static final String CLIENT_ID                = "CLIENT_ID";
-    public static final String MQTT_HOST                = "MQTT_HOST";
-    public static final String MQTT_PORT                = "MQTT_PORT";
-    public static final String MQTT_USER                = "MQTT_USER";
-    public static final String MQTT_PW                  = "MQTT_PW";
-    public static final String MQTT_TOPIC_MESSAGES      = "TOPIC_MESSAGES";
-    public static final String MQTT_TOPIC_PRESENCE      = "TOPIC_PRESENCE";
-    public static final String MQTT_TOPIC_ALL_MODULES   = "TOPIC_ALL_IOT_MODULES";
-    public static final String MQTT_TOPIC_SEPARATOR     = "/";
-    public static final String MQTT_PLUS                = "+";
+    public static final String PROPERTY_CLIENT_ID              = "CLIENT_ID";
+    public static final String PROPERTY_MQTT_HOST              = "MQTT_HOST";
+    public static final String PROPERTY_MQTT_PORT              = "MQTT_PORT";
+    public static final String PROPERTY_MQTT_USER              = "MQTT_USER";
+    public static final String PROPERTY_MQTT_PW                = "MQTT_PW";
+    public static final String PROPERTY_MQTT_TOPIC_PRESENCE    = "TOPIC_PRESENCE";
+    public static final String PROPERTY_MQTT_TOPIC_IOT_MODULES = "TOPIC_IOT_MODULES";
+    public static final String MQTT_TOPIC_SEPARATOR            = "/";
+    public static final String MQTT_PLUS                       = "+";
+    public static final String MQTT_IOT_MODULES_TOPIC          = "iotmodules";
+    public static final String MQTT_SENSORS_TOPIC              = "sensors";
+    public static final String MQTT_ACTORS_TOPIC               = "actors";
 
-    public static final String MQTT_IOT_MODULES_TOPIC   = "iotmodules";
-    public static final String MQTT_SENSORS_TOPIC       = "sensors";
-    public static final String MQTT_ACTORS_TOPIC        = "actors";
+    public static final String SQUARE_BRACKET_OPEN             = "[";
+    public static final String SQUARE_BRACKET_CLOSE            = "]";
+    public static final String CURLY_BRACKET_OPEN              = "{";
+    public static final String CURLY_BRACKET_CLOSE             = "}";
+    public static final String INDENTED_QUOTES                 = "  \"";
+    public static final String QUOTES                          = "\"";
+    public static final String COLON                           = ":";
+    public static final String COMMA                           = ",";
+    public static final String SLASH                           = "/";
+    public static final String NEW_LINE                        = "\n";
+    public static final String COMMA_NEW_LINE                  = ",\n";
+    public static final String INDENT                          = "  ";
 
-    public static final String SQUARE_BRACKET_OPEN      = "[";
-    public static final String SQUARE_BRACKET_CLOSE     = "]";
-    public static final String CURLY_BRACKET_OPEN       = "{";
-    public static final String CURLY_BRACKET_CLOSE      = "}";
-    public static final String INDENTED_QUOTES          = "  \"";
-    public static final String QUOTES                   = "\"";
-    public static final String COLON                    = ":";
-    public static final String COMMA                    = ",";
-    public static final String SLASH                    = "/";
-    public static final String NEW_LINE                 = "\n";
-    public static final String COMMA_NEW_LINE           = ",\n";
-    public static final String INDENT                   = "  ";
-
-    public static final String FIELD_MODULE_ID          = "module_id";
-    public static final String FIELD_SENSOR_ID          = "sensor_id";
-    public static final String FIELD_ACTOR_ID           = "actor_id";
-    public static final String FIELD_CONNECTED          = "connected";
-    public static final String FIELD_TIMESTAMP          = "timestamp";
-    public static final String FIELD_SENSORS            = "sensors";
-    public static final String FIELD_ACTORS             = "actors";
-    public static final String FIELD_ID                 = "id";
-    public static final String FIELD_TYPE               = "type";
-    public static final String FIELD_VALUE              = "value";
-    public static final String FIELD_INTENSITY          = "intensity";
-    public static final String FIELD_RED                = "red";
-    public static final String FIELD_GREEN              = "green";
-    public static final String FIELD_BLUE               = "blue";
+    public static final String FIELD_MODULE_ID                 = "module_id";
+    public static final String FIELD_SENSOR_ID                 = "sensor_id";
+    public static final String FIELD_ACTOR_ID                  = "actor_id";
+    public static final String FIELD_CONNECTED                 = "connected";
+    public static final String FIELD_TIMESTAMP                 = "timestamp";
+    public static final String FIELD_SENSORS                   = "sensors";
+    public static final String FIELD_ACTORS                    = "actors";
+    public static final String FIELD_ID                        = "id";
+    public static final String FIELD_TYPE                      = "type";
+    public static final String FIELD_VALUE                     = "value";
+    public static final String FIELD_INTENSITY                 = "intensity";
+    public static final String FIELD_RED                       = "red";
+    public static final String FIELD_GREEN                     = "green";
+    public static final String FIELD_BLUE                      = "blue";
 
 
     public enum SensorType {

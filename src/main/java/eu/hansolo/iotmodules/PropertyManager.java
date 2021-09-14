@@ -24,13 +24,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
-import java.util.UUID;
 
 
 public enum PropertyManager {
@@ -122,13 +119,13 @@ public enum PropertyManager {
                 default     : break;
             }
 
-            properties.put(Constants.CLIENT_ID, Helper.createId());
-            properties.put(Constants.MQTT_HOST, "MQTT_BROKER_ADDRESS");
-            properties.put(Constants.MQTT_PORT, "8883");
-            properties.put(Constants.MQTT_USER, "MQTT_USER_NAME");
-            properties.put(Constants.MQTT_PW, "MQTT_PASSWORD");
-            properties.put(Constants.MQTT_TOPIC_PRESENCE, String.join(Constants.MQTT_TOPIC_SEPARATOR, Constants.MQTT_IOT_MODULES_TOPIC, "presence"));
-            properties.put(Constants.MQTT_TOPIC_ALL_MODULES, Constants.MQTT_IOT_MODULES_TOPIC);
+            properties.put(Constants.PROPERTY_CLIENT_ID, Helper.createId());
+            properties.put(Constants.PROPERTY_MQTT_HOST, "MQTT_BROKER_ADDRESS");
+            properties.put(Constants.PROPERTY_MQTT_PORT, "8883");
+            properties.put(Constants.PROPERTY_MQTT_USER, "MQTT_USER_NAME");
+            properties.put(Constants.PROPERTY_MQTT_PW, "MQTT_PASSWORD");
+            properties.put(Constants.PROPERTY_MQTT_TOPIC_PRESENCE, String.join(Constants.MQTT_TOPIC_SEPARATOR, Constants.MQTT_IOT_MODULES_TOPIC, "presence"));
+            properties.put(Constants.PROPERTY_MQTT_TOPIC_IOT_MODULES, Constants.MQTT_IOT_MODULES_TOPIC);
             properties.store(output, "IoT Modules");
         } catch (IOException ex) {
             ex.printStackTrace();

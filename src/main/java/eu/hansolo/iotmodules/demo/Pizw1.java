@@ -56,9 +56,9 @@ public class Pizw1 extends IotModule implements EvtObserver<TemperatureSensorEvt
         led                = new Led("1");
         connectionListener = evt -> {
             if (null == mqttManager) { return; }
-            final String presenceTopic = new StringBuilder().append(PropertyManager.INSTANCE.getString(Constants.MQTT_TOPIC_PRESENCE))
+            final String presenceTopic = new StringBuilder().append(PropertyManager.INSTANCE.getString(Constants.PROPERTY_MQTT_TOPIC_PRESENCE))
                                                             .append(Constants.MQTT_TOPIC_SEPARATOR)
-                                                            .append(PropertyManager.INSTANCE.getString(Constants.CLIENT_ID))
+                                                            .append(PropertyManager.INSTANCE.getString(Constants.PROPERTY_CLIENT_ID))
                                                             .toString();
             final String msg = toJsonString();
             mqttManager.publish(presenceTopic, MqttQos.AT_LEAST_ONCE, true, msg);
