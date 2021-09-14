@@ -46,15 +46,15 @@ public class RgbLed implements Actor {
 
     public int getRed() { return red.get(); }
     public void setRed(final int red) { this.red.set(Helper.clamp(0, 255, red)); }
-    public IntegerProperty red() { return red; }
+    public IntegerProperty redProperty() { return red; }
 
     public int getGreen() { return green.get(); }
     public void setGreen(final int green) { this.green.set(Helper.clamp(0, 255, green)); }
-    public IntegerProperty green() { return green; }
+    public IntegerProperty greenProperty() { return green; }
 
     public int getBlue() { return blue.get(); }
-    public void setblue(final int blue) { this.blue.set(Helper.clamp(0, 255, blue)); }
-    public IntegerProperty blue() { return blue; }
+    public void setBlue(final int blue) { this.blue.set(Helper.clamp(0, 255, blue)); }
+    public IntegerProperty blueProperty() { return blue; }
 
     public void set(final int red, final int green, final int blue) {
         this.red.set(Helper.clamp(0, 255, red));
