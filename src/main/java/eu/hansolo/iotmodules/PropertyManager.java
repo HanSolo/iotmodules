@@ -122,20 +122,13 @@ public enum PropertyManager {
                 default     : break;
             }
 
-            String clientId = UUID.randomUUID().toString();
-            try {
-                clientId = InetAddress.getLocalHost().getHostName();
-            } catch (UnknownHostException e) {
-                clientId = UUID.randomUUID().toString();
-            }
-
-            properties.put(Constants.CLIENT_ID, "module_" + clientId);
+            properties.put(Constants.CLIENT_ID, Helper.createId());
             properties.put(Constants.MQTT_HOST, "MQTT_BROKER_ADDRESS");
             properties.put(Constants.MQTT_PORT, "8883");
             properties.put(Constants.MQTT_USER, "MQTT_USER_NAME");
             properties.put(Constants.MQTT_PW, "MQTT_PASSWORD");
-            properties.put(Constants.MQTT_TOPIC_PRESENCE, "presence");
-            properties.put(Constants.MQTT_TOPIC_ALL_MODULES, "all_modules");
+            properties.put(Constants.MQTT_TOPIC_PRESENCE, String.join(Constants.MQTT_TOPIC_SEPARATOR, Constants.MQTT_IOT_MODULES_TOPIC, "presence"));
+            properties.put(Constants.MQTT_TOPIC_ALL_MODULES, Constants.MQTT_IOT_MODULES_TOPIC);
             properties.store(output, "IoT Modules");
         } catch (IOException ex) {
             ex.printStackTrace();

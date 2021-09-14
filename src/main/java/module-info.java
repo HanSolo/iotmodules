@@ -2,9 +2,11 @@ module eu.hansolo.iotmodules {
     // Java
     requires java.base;
 
-    // Java-FX
+    // 3rd Party
     requires eu.hansolo.evt;
     requires eu.hansolo.properties;
+    requires com.hivemq.client.mqtt;
+    requires jdk.unsupported;
 
     exports eu.hansolo.iotmodules;
     exports eu.hansolo.iotmodules.tools;

@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-package eu.hansolo.iotmodules.actors;
+package eu.hansolo.iotmodules.event;
+
+public class MqttEvt {
+    private String topic;
+    private String msg;
 
 
-import eu.hansolo.iotmodules.tools.Constants.ActorType;
+    // ******************** Constructors **************************************
+    public MqttEvt(final String topic, final String msg) {
+        this.topic = topic;
+        this.msg   = msg;
+    }
 
 
-public interface Actor {
+    // ******************** Messages ******************************************
+    public String getTopic() { return topic; }
 
-    String getId();
-
-    ActorType getActorType();
-
-    void dispose();
-
-    String toJsonString();
+    public String getMsg() { return msg; }
 }

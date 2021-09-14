@@ -43,13 +43,15 @@ public class HumiditySensor implements Sensor {
     // ******************** Constructors **************************************
     public HumiditySensor(final String id) {
         if (null == id || id.isEmpty()) { throw new IllegalArgumentException("Sensor ID cannot be null or empty"); }
-        this.id        = id;
+        this.id        = getSensorType().getTypeId() + "_" + id;
         this._humidity = 0;
     }
 
 
     // ******************** Methods *******************************************
     public String getId() { return id; }
+
+    public SensorType getSensorType() { return SensorType.HUMIDITY; }
 
     public double getHumidity() { return null == humidity ? _humidity : humidity.get(); }
     public void setHumidity(final double value) {
@@ -106,9 +108,9 @@ public class HumiditySensor implements Sensor {
     @Override public String toJsonString() {
         StringBuilder msgBuilder = new StringBuilder();
         msgBuilder.append(CURLY_BRACKET_OPEN)
-                  .append(INDENTED_QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA_NEW_LINE)
-                  .append(INDENTED_QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(TYPE_HUMIDITY).append(QUOTES).append(COMMA_NEW_LINE)
-                  .append(INDENTED_QUOTES).append(FIELD_HUMIDITY).append(QUOTES).append(COLON).append(getHumidity()).append(NEW_LINE)
+                  .append(QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA)
+                  .append(QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(getSensorType().getTypeId()).append(QUOTES).append(COMMA)
+                  .append(QUOTES).append(FIELD_VALUE).append(QUOTES).append(COLON).append(getHumidity())
                   .append(CURLY_BRACKET_CLOSE);
         return msgBuilder.toString();
     }

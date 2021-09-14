@@ -52,6 +52,8 @@ public class CurrentSensor implements Sensor {
     // ******************** Methods *******************************************
     public String getId() { return id; }
 
+    public SensorType getSensorType() { return SensorType.CURRENT; }
+
     public double getCurrent() { return null == current ? _current : current.get(); }
     public void setCurrent(final double value) {
         if (null == current) {
@@ -107,9 +109,9 @@ public class CurrentSensor implements Sensor {
     @Override public String toJsonString() {
         StringBuilder msgBuilder = new StringBuilder();
         msgBuilder.append(CURLY_BRACKET_OPEN)
-                  .append(INDENTED_QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA_NEW_LINE)
-                  .append(INDENTED_QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(TYPE_CURRENT).append(QUOTES).append(COMMA_NEW_LINE)
-                  .append(INDENTED_QUOTES).append(FIELD_CURRENT).append(QUOTES).append(COLON).append(getCurrent()).append(NEW_LINE)
+                  .append(QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA)
+                  .append(QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(getSensorType().getTypeId()).append(QUOTES).append(COMMA)
+                  .append(QUOTES).append(FIELD_VALUE).append(QUOTES).append(COLON).append(getCurrent())
                   .append(CURLY_BRACKET_CLOSE);
         return msgBuilder.toString();
     }

@@ -17,11 +17,14 @@
 package eu.hansolo.iotmodules.sensors;
 
 import eu.hansolo.iotmodules.event.SensorEvt;
+import eu.hansolo.iotmodules.tools.Constants.SensorType;
 
 
 public interface Sensor {
 
     String getId();
+
+    SensorType getSensorType();
 
     void triggerMeasurement();
 

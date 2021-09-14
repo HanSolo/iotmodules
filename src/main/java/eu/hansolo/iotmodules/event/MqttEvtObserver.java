@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-package eu.hansolo.iotmodules.actors;
+package eu.hansolo.iotmodules.event;
 
-
-import eu.hansolo.iotmodules.tools.Constants.ActorType;
-
-
-public interface Actor {
-
-    String getId();
-
-    ActorType getActorType();
-
-    void dispose();
-
-    String toJsonString();
+@FunctionalInterface
+public interface MqttEvtObserver {
+    void handleEvt(MqttEvt evt);
 }

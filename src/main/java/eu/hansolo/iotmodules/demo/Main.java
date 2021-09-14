@@ -51,7 +51,8 @@ public class Main {
             e.printStackTrace();
         }
 
-        Room room = new Room();
+        Pizw1 room = new Pizw1();
+        System.out.println(room.toString());
     }
 
 

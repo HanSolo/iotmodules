@@ -55,7 +55,9 @@ repositories {
 
 dependencies {
     implementation 'eu.hansolo:evt:1.6'
-    implementation 'eu.hansolo:properties:11.11'
+    implementation 'eu.hansolo:properties:11.13'
+    implementation 'com.hivemq:hivemq-mqtt-client:1.2.2'
+    implementation 'com.google.code.gson:gson:2.8.8'
 }
 
 jar {

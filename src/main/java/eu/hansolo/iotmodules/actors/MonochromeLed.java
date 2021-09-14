@@ -16,39 +16,37 @@
 
 package eu.hansolo.iotmodules.actors;
 
-import eu.hansolo.properties.BooleanProperty;
+import eu.hansolo.iotmodules.tools.Constants.ActorType;
+import eu.hansolo.iotmodules.tools.Helper;
+import eu.hansolo.properties.IntegerProperty;
 
 import static eu.hansolo.iotmodules.tools.Constants.*;
 
 
-public class Relais implements Actor {
+public class MonochromeLed implements Actor {
     private final String          id;
-    private       BooleanProperty closed;
+    private       IntegerProperty intensity;
 
 
     // ******************** Constructors **************************************
-    public Relais(final String id) {
-        this(id, false);
-    }
-    public Relais(final String id, final boolean closed) {
+    public MonochromeLed(final String id) {
         if (null == id || id.isEmpty()) { throw new IllegalArgumentException("Actor ID cannot be null or empty"); }
-        this.id     = getActorType().getTypeId() + "_" + id;
-        this.closed = new BooleanProperty(closed);
+        this.id        = getActorType().getTypeId() + "_" + id;
+        this.intensity = new IntegerProperty(0);
     }
 
 
     // ******************** Methods *******************************************
     public String getId() { return id; }
 
-    public ActorType getActorType() { return ActorType.RELAIS; }
+    public ActorType getActorType() { return ActorType.MONOCHROME_LED; }
 
-    public boolean isClosed() { return closed.get(); }
-    public void setClosed(final boolean closed) { this.closed.set(closed); }
-    public BooleanProperty closedProperty() { return closed; }
-
+    public int getIntensity() { return intensity.get(); }
+    public void setIntensity(final int intensity) { this.intensity.set(Helper.clamp(0, 255, intensity)); }
+    public IntegerProperty intensity() { return intensity; }
 
     @Override public void dispose() {
-        closed.removeAllListeners();
+        intensity.removeAllListeners();
     }
 
     @Override public String toJsonString() {
@@ -56,7 +54,7 @@ public class Relais implements Actor {
         msgBuilder.append(CURLY_BRACKET_OPEN)
                   .append(QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA)
                   .append(QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(getActorType().getTypeId()).append(QUOTES).append(COMMA)
-                  .append(QUOTES).append(FIELD_VALUE).append(QUOTES).append(COLON).append(isClosed())
+                  .append(QUOTES).append(FIELD_INTENSITY).append(QUOTES).append(COLON).append(getIntensity())
                   .append(CURLY_BRACKET_CLOSE);
         return msgBuilder.toString();
     }

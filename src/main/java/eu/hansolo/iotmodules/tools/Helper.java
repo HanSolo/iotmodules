@@ -16,6 +16,11 @@
 
 package eu.hansolo.iotmodules.tools;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.UUID;
+
+
 public class Helper {
     public static final int clamp(final int min, final int max, final int value) {
         if (value < min) return min;
@@ -40,5 +45,11 @@ public class Helper {
         } else {
             return OperatingSystem.NONE;
         }
+    }
+
+    public static final String createId() {
+        String tmpId = UUID.randomUUID().toString();
+        try { tmpId = InetAddress.getLocalHost().getHostName(); } catch (UnknownHostException e) {}
+        return tmpId;
     }
 }

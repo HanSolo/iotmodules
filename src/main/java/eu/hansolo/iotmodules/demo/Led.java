@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package eu.hansolo.iotmodules.actors;
+package eu.hansolo.iotmodules.demo;
+
+import eu.hansolo.iotmodules.actors.RgbLed;
 
 
-import eu.hansolo.iotmodules.tools.Constants.ActorType;
+public class Led extends RgbLed {
 
+    public Led(final String id) {
+        super(id);
+    }
 
-public interface Actor {
-
-    String getId();
-
-    ActorType getActorType();
-
-    void dispose();
-
-    String toJsonString();
+    @Override public void set(final int red, final int green, final int blue) {
+        super.set(red, green, blue);
+    }
 }

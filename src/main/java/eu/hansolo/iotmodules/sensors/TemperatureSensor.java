@@ -43,13 +43,15 @@ public class TemperatureSensor implements Sensor {
     // ******************** Constructors **************************************
     public TemperatureSensor(final String id) {
         if (null == id || id.isEmpty()) { throw new IllegalArgumentException("Sensor ID cannot be null or empty"); }
-        this.id           = id;
+        this.id           = getSensorType().getTypeId() + "_" + id;
         this._temperature = 0;
     }
 
 
     // ******************** Methods *******************************************
     public String getId() { return id; }
+
+    public SensorType getSensorType() { return SensorType.TEMPERATURE; }
 
     public double getTemperature() { return null == temperature ? _temperature : temperature.get(); }
     public void setTemperature(final double value) {
@@ -106,9 +108,9 @@ public class TemperatureSensor implements Sensor {
     @Override public String toJsonString() {
         StringBuilder msgBuilder = new StringBuilder();
         msgBuilder.append(CURLY_BRACKET_OPEN)
-                  .append(INDENTED_QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA_NEW_LINE)
-                  .append(INDENTED_QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(TYPE_TEMPERATURE).append(QUOTES).append(COMMA_NEW_LINE)
-                  .append(INDENTED_QUOTES).append(FIELD_TEMPERATURE).append(QUOTES).append(COLON).append(getTemperature()).append(NEW_LINE)
+                  .append(QUOTES).append(FIELD_ID).append(QUOTES).append(COLON).append(QUOTES).append(getId()).append(QUOTES).append(COMMA)
+                  .append(QUOTES).append(FIELD_TYPE).append(QUOTES).append(COLON).append(QUOTES).append(getSensorType().getTypeId()).append(QUOTES).append(COMMA)
+                  .append(QUOTES).append(FIELD_VALUE).append(QUOTES).append(COLON).append(getTemperature())
                   .append(CURLY_BRACKET_CLOSE);
         return msgBuilder.toString();
     }
